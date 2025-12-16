@@ -31,7 +31,7 @@
 <br>
 
 ## 🖼️ 미리보기
-<img width="425" height="931" alt="image" src="https://github.com/user-attachments/assets/5b2cbf48-3b80-4622-8f79-59db09d07c1c" />
+공사중
 
 <br>
 
