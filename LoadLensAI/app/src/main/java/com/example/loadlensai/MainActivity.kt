@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             // 이미지 분석기 (AI에게 화면을 보내주는 역할)
             val imageAnalysis = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setTargetRotation(viewFinder.display.rotation) // 👈 이 줄 추가! (중요)
                 .build()
 
             imageAnalysis.setAnalyzer(executor) { imageProxy ->
@@ -73,10 +74,29 @@ class MainActivity : AppCompatActivity() {
 
                     // 추론 실행
                     val results = detector.detect(rotatedBitmap)
-
+                    // 디버깅용
+//                    android.util.Log.d("AI_CHECK", "--------------------------------")
+//                    android.util.Log.d("AI_CHECK", "감지된 개수: ${results.size}")
+//                    results.forEach {
+//                        android.util.Log.d("AI_CHECK", "물체: ${it.label}, 점수: ${it.score}, 좌표: ${it.rect}")
+//                    }
+                    //----
                     // 화면 업데이트 (메인 스레드에서)
                     runOnUiThread {
-                        overlayView.setResults(results)
+                        // ⚠️ 수정된 로직: 0~1 사이의 좌표를 화면 크기로 뻥튀기(Scale)
+                        val scaledResults = results.map { box ->
+                            val scaledRect = android.graphics.RectF(
+                                box.rect.left * overlayView.width,   // 가로 위치 = 0.35 * 화면너비
+                                box.rect.top * overlayView.height,   // 세로 위치 = 0.27 * 화면높이
+                                box.rect.right * overlayView.width,
+                                box.rect.bottom * overlayView.height
+                            )
+                            OverlayView.Box(scaledRect, box.label, box.score)
+                        }
+
+                        // 갱신 명령
+                        overlayView.setResults(scaledResults)
+                        overlayView.invalidate()
                     }
                 }
                 imageProxy.close()
