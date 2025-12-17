@@ -45,6 +45,7 @@
 - **Mobile:** Android (Kotlin), CameraX
 - **Inference:** TensorFlow Lite (GPU Delegate)
 - **Environment:** Python 3.9, Android Studio
+- **Dataset:** 과적차량 도로 위험 데이터(AI Hub 공개 데이터셋, 수행기관: (주) 에스디엠이앤씨)
 <br>
 
 ## ⚙️ 설치 및 실행 방법
