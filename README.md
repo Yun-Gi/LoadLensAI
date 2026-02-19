@@ -1,3 +1,4 @@
+[🇰🇷 한국어(Korean)](README.md) | [🇯🇵 日本語(Japanese)](README_ja.md)
 # 🚀 LoadLensAI
 
 > 실시간 과적 차량 단속 AI 앱
